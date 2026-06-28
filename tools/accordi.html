@@ -3,35 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generatore di progressioni · Kantautore</title>
+  <title>Progressioni & emozioni · Kantautore</title>
   <link rel="stylesheet" href="../css/style.css">
   <style>
-    .controls { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; margin-bottom:4px; }
-    .controls .f { flex:0 0 auto; min-width:120px; }
+    .emotions { display:flex; gap:9px; flex-wrap:wrap; }
+    .emo { background:var(--bg-soft); border:1px solid var(--border); color:var(--text); cursor:pointer;
+      border-radius:999px; padding:8px 15px; font-family:inherit; font-weight:600; font-size:.92rem;
+      display:flex; align-items:center; gap:7px; transition:.15s; }
+    .emo:hover { border-color:var(--emo-c, var(--accent)); }
+    .emo.on { background:var(--emo-c); border-color:var(--emo-c); color:#171320; }
+    .emo .e { font-size:1.05rem; }
+    .emo-info { margin-top:16px; background:var(--bg-soft); border:1px solid var(--border);
+      border-left:3px solid var(--emo-c, var(--accent)); border-radius:12px; padding:14px 16px; display:none; }
+    .emo-info.show { display:block; }
+    .emo-info h3 { margin:0 0 4px; font-size:1.05rem; }
+    .emo-info .meta { display:flex; gap:16px; flex-wrap:wrap; color:var(--muted); font-size:.85rem; margin:8px 0; }
+    .emo-info .meta b { color:var(--text); }
+    .emo-info p { margin:6px 0 0; color:var(--muted); font-size:.9rem; }
+
+    .controls { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+    .controls .f { flex:0 0 auto; min-width:118px; }
+    .switch { display:flex; align-items:center; gap:8px; color:var(--muted); font-weight:600; font-size:.9rem; cursor:pointer; }
+    .switch input { width:auto; }
+
     .graph-wrap { position:relative; }
     svg.graph { width:100%; height:auto; display:block; }
     .node circle { fill:var(--card); stroke:var(--border); stroke-width:2; transition:.15s; cursor:pointer; }
-    .node:hover circle { stroke:var(--accent); }
+    .node:hover circle { stroke:var(--emo-c, var(--accent)); }
     .node text { fill:var(--text); font-weight:800; text-anchor:middle; dominant-baseline:central; pointer-events:none; }
     .node .roman { fill:var(--muted); font-weight:600; }
-    .node.selected circle { fill:var(--accent); stroke:var(--accent); }
-    .node.selected text { fill:#1a1622; }
-    .node.target circle { stroke:var(--accent-2); stroke-width:3; }
+    .node.selected circle { fill:var(--emo-c, var(--accent)); stroke:var(--emo-c, var(--accent)); }
+    .node.selected text { fill:#171320; }
+    .node.target circle { stroke:var(--emo-c, var(--accent-2)); stroke-width:3; }
     .arrow { fill:none; stroke:var(--border); stroke-width:2; opacity:.30; transition:.15s; }
-    .arrow.active { stroke:var(--accent-2); opacity:1; stroke-width:2.6; }
+    .arrow.active { stroke:var(--emo-c, var(--accent-2)); opacity:1; stroke-width:2.6; }
     .arrow.dim { opacity:.07; }
     .zone-label { fill:var(--muted); font-size:13px; font-weight:700; text-anchor:middle; letter-spacing:.04em; text-transform:uppercase; }
+
     .prog { display:flex; gap:10px; flex-wrap:wrap; align-items:center; min-height:58px; margin:8px 0 14px;
       background:var(--bg-soft); border:1px solid var(--border); border-radius:12px; padding:12px; }
     .prog .chip { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:8px 14px;
-      font-weight:800; font-size:1.1rem; position:relative; }
+      font-weight:800; font-size:1.1rem; }
     .prog .chip .r { display:block; font-size:.68rem; color:var(--muted); font-weight:600; text-align:center; }
-    .prog .chip.playing { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent); }
+    .prog .chip.playing { border-color:var(--emo-c, var(--accent)); box-shadow:0 0 0 2px var(--emo-c, var(--accent)); }
     .prog .empty { color:var(--muted); }
     .presets { display:flex; gap:8px; flex-wrap:wrap; }
     .presets button { background:var(--bg-soft); border:1px solid var(--border); color:var(--text); cursor:pointer;
       border-radius:999px; padding:7px 14px; font-family:inherit; font-weight:600; font-size:.88rem; }
-    .presets button:hover { border-color:var(--accent); }
+    .presets button:hover { border-color:var(--emo-c, var(--accent)); }
     .presets button .d { color:var(--muted); font-weight:400; font-size:.8rem; }
     .legend { font-size:.82rem; color:var(--muted); }
     .toolbar2 { display:flex; gap:8px; flex-wrap:wrap; }
@@ -41,8 +60,14 @@
   <main class="wrap">
     <div class="page-head">
       <a class="back" href="../index.html">← Tutti gli strumenti</a>
-      <h1>🎹 Generatore di progressioni</h1>
-      <p>Scopri come muoverti da un accordo all'altro. Clicca un accordo nel grafo: si illuminano le mosse che funzionano e l'accordo entra nella tua progressione.</p>
+      <h1>🎹 Progressioni & emozioni</h1>
+      <p>Parti da come ti vuoi sentire. Scegli un'emozione e ricevi progressioni di accordi che la evocano — poi esplora il grafo per muoverti da un accordo all'altro.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Che emozione vuoi trasmettere?</h2>
+      <div class="emotions" id="emotions"></div>
+      <div class="emo-info" id="emoInfo"></div>
     </div>
 
     <div class="panel">
@@ -62,6 +87,10 @@
             <option value="minor">Minore</option>
           </select>
         </div>
+        <div class="f">
+          <label>&nbsp;</label>
+          <label class="switch"><input type="checkbox" id="colore"> accordi colorati (settime)</label>
+        </div>
         <div class="f" style="margin-left:auto">
           <label>&nbsp;</label>
           <div class="toolbar2">
@@ -74,7 +103,7 @@
 
     <div class="panel">
       <h2>La tua progressione</h2>
-      <div class="prog" id="prog"><span class="empty">Clicca gli accordi nel grafo qui sotto, oppure premi “Genera” o scegli una progressione famosa.</span></div>
+      <div class="prog" id="prog"><span class="empty">Scegli un'emozione e premi “Genera”, oppure clicca gli accordi nel grafo qui sotto.</span></div>
       <div class="toolbar2" style="margin-bottom:16px">
         <button class="btn ghost" id="undo">↶ Togli ultimo</button>
         <button class="btn ghost" id="clear">🗑 Svuota</button>
@@ -87,12 +116,11 @@
       <p class="legend" style="margin-top:6px">
         Il flusso naturale dell'armonia va da sinistra a destra: <b>Tonica</b> (casa, riposo) →
         <b>Sottodominante</b> (allontanamento) → <b>Dominante</b> (tensione) → torna a <b>Tonica</b>.
-        Le frecce mostrano i movimenti più usati; puoi comunque rompere le regole, in musica si può!
       </p>
     </div>
 
     <div class="panel">
-      <h2>Progressioni famose</h2>
+      <h2 id="ideeTitle">Progressioni famose</h2>
       <div class="presets" id="presets"></div>
     </div>
   </main>
