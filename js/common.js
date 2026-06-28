@@ -7,6 +7,7 @@
   const tools = [
     { href: 'tools/editor.html',         label: 'Editor testi' },
     { href: 'tools/rime.html',           label: 'Rime & metrica' },
+    { href: 'tools/accordi.html',        label: 'Progressioni' },
     { href: 'tools/metronomo.html',      label: 'Metronomo & accordatore' },
     { href: 'tools/bpm-key.html',        label: 'BPM & tonalità' },
     { href: 'tools/vocal-remover.html',  label: 'Vocal remover' },

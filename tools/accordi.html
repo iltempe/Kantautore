@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generatore di progressioni · Kantautore</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .controls { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; margin-bottom:4px; }
+    .controls .f { flex:0 0 auto; min-width:120px; }
+    .graph-wrap { position:relative; }
+    svg.graph { width:100%; height:auto; display:block; }
+    .node circle { fill:var(--card); stroke:var(--border); stroke-width:2; transition:.15s; cursor:pointer; }
+    .node:hover circle { stroke:var(--accent); }
+    .node text { fill:var(--text); font-weight:800; text-anchor:middle; dominant-baseline:central; pointer-events:none; }
+    .node .roman { fill:var(--muted); font-weight:600; }
+    .node.selected circle { fill:var(--accent); stroke:var(--accent); }
+    .node.selected text { fill:#1a1622; }
+    .node.target circle { stroke:var(--accent-2); stroke-width:3; }
+    .arrow { fill:none; stroke:var(--border); stroke-width:2; opacity:.30; transition:.15s; }
+    .arrow.active { stroke:var(--accent-2); opacity:1; stroke-width:2.6; }
+    .arrow.dim { opacity:.07; }
+    .zone-label { fill:var(--muted); font-size:13px; font-weight:700; text-anchor:middle; letter-spacing:.04em; text-transform:uppercase; }
+    .prog { display:flex; gap:10px; flex-wrap:wrap; align-items:center; min-height:58px; margin:8px 0 14px;
+      background:var(--bg-soft); border:1px solid var(--border); border-radius:12px; padding:12px; }
+    .prog .chip { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:8px 14px;
+      font-weight:800; font-size:1.1rem; position:relative; }
+    .prog .chip .r { display:block; font-size:.68rem; color:var(--muted); font-weight:600; text-align:center; }
+    .prog .chip.playing { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent); }
+    .prog .empty { color:var(--muted); }
+    .presets { display:flex; gap:8px; flex-wrap:wrap; }
+    .presets button { background:var(--bg-soft); border:1px solid var(--border); color:var(--text); cursor:pointer;
+      border-radius:999px; padding:7px 14px; font-family:inherit; font-weight:600; font-size:.88rem; }
+    .presets button:hover { border-color:var(--accent); }
+    .presets button .d { color:var(--muted); font-weight:400; font-size:.8rem; }
+    .legend { font-size:.82rem; color:var(--muted); }
+    .toolbar2 { display:flex; gap:8px; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="page-head">
+      <a class="back" href="../index.html">← Tutti gli strumenti</a>
+      <h1>🎹 Generatore di progressioni</h1>
+      <p>Scopri come muoverti da un accordo all'altro. Clicca un accordo nel grafo: si illuminano le mosse che funzionano e l'accordo entra nella tua progressione.</p>
+    </div>
+
+    <div class="panel">
+      <div class="controls">
+        <div class="f">
+          <label>Tonalità</label>
+          <select id="key">
+            <option>C</option><option>C#</option><option>D</option><option>D#</option>
+            <option>E</option><option>F</option><option>F#</option><option>G</option>
+            <option>G#</option><option>A</option><option>A#</option><option>B</option>
+          </select>
+        </div>
+        <div class="f">
+          <label>Modo</label>
+          <select id="mode">
+            <option value="major">Maggiore</option>
+            <option value="minor">Minore</option>
+          </select>
+        </div>
+        <div class="f" style="margin-left:auto">
+          <label>&nbsp;</label>
+          <div class="toolbar2">
+            <button class="btn secondary" id="gen">🎲 Genera</button>
+            <button class="btn" id="play">▶ Ascolta</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>La tua progressione</h2>
+      <div class="prog" id="prog"><span class="empty">Clicca gli accordi nel grafo qui sotto, oppure premi “Genera” o scegli una progressione famosa.</span></div>
+      <div class="toolbar2" style="margin-bottom:16px">
+        <button class="btn ghost" id="undo">↶ Togli ultimo</button>
+        <button class="btn ghost" id="clear">🗑 Svuota</button>
+        <button class="btn ghost" id="copy">📋 Copia accordi</button>
+      </div>
+
+      <div class="graph-wrap">
+        <svg class="graph" id="graph" viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" aria-label="Grafo dei movimenti tra accordi"></svg>
+      </div>
+      <p class="legend" style="margin-top:6px">
+        Il flusso naturale dell'armonia va da sinistra a destra: <b>Tonica</b> (casa, riposo) →
+        <b>Sottodominante</b> (allontanamento) → <b>Dominante</b> (tensione) → torna a <b>Tonica</b>.
+        Le frecce mostrano i movimenti più usati; puoi comunque rompere le regole, in musica si può!
+      </p>
+    </div>
+
+    <div class="panel">
+      <h2>Progressioni famose</h2>
+      <div class="presets" id="presets"></div>
+    </div>
+  </main>
+
+  <script src="../js/common.js"></script>
+  <script src="../js/accordi.js"></script>
+</body>
+</html>
