@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocal remover · Kantautore</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .drop { border:2px dashed var(--border); border-radius:var(--radius); padding:42px 20px; text-align:center; transition:.15s; cursor:pointer; }
+    .drop.over { border-color:var(--accent); background:var(--bg-soft); }
+    .drop .ico { font-size:2.4rem; }
+    .ab { display:flex; gap:10px; flex-wrap:wrap; margin:16px 0; }
+    .ab .btn { flex:1; min-width:150px; }
+    .note-box { background:var(--bg-soft); border:1px solid var(--border); border-left:3px solid var(--accent-2);
+      border-radius:10px; padding:14px 16px; font-size:.9rem; color:var(--muted); }
+    audio { width:100%; margin-top:8px; }
+    .playing { outline:2px solid var(--accent); }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="page-head">
+      <a class="back" href="../index.html">← Tutti gli strumenti</a>
+      <h1>🎤 Vocal remover <span class="pill" style="color:var(--bad)">sperimentale</span></h1>
+      <p>Toglie i suoni al centro dello stereo (di solito la voce) per ottenere una base karaoke.</p>
+    </div>
+
+    <div class="panel">
+      <div class="note-box" style="margin-bottom:18px">
+        <b>Come funziona, in onestà.</b> Questo strumento sottrae il canale destro dal sinistro:
+        sparisce tutto ciò che è registrato “al centro” (spesso voce, ma anche cassa e basso).
+        Funziona bene solo su brani <b>stereo</b> con la voce centrata, e il risultato è in mono.
+        Non è una separazione AI: per quella servono modelli pesanti e un server.
+      </div>
+
+      <div class="drop" id="drop">
+        <div class="ico">🎵</div>
+        <p><b>Trascina qui un brano stereo</b><br><span class="muted">oppure clicca per sceglierlo</span></p>
+        <input type="file" id="file" accept="audio/*" hidden>
+      </div>
+      <p class="muted" id="msg" style="margin-top:12px"></p>
+
+      <div id="player" style="display:none">
+        <div class="ab">
+          <button class="btn secondary" id="playOrig">▶ Originale</button>
+          <button class="btn" id="playKar">▶ Base karaoke</button>
+          <button class="btn ghost" id="stop">⏹ Stop</button>
+        </div>
+        <button class="btn secondary" id="download" style="width:100%">⬇ Scarica base karaoke (.wav)</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/common.js"></script>
+  <script src="../js/vocal.js"></script>
+</body>
+</html>

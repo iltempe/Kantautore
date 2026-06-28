@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BPM & tonalità · Kantautore</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .drop { border:2px dashed var(--border); border-radius:var(--radius); padding:42px 20px; text-align:center;
+      transition:.15s; cursor:pointer; }
+    .drop.over { border-color:var(--accent); background:var(--bg-soft); }
+    .drop .ico { font-size:2.4rem; }
+    .results { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px; }
+    @media (max-width:640px){ .results{ grid-template-columns:1fr; } }
+    .stat { background:var(--bg-soft); border:1px solid var(--border); border-radius:var(--radius); padding:26px; text-align:center; }
+    .stat .big { font-size:3.2rem; font-weight:800; letter-spacing:-.03em; line-height:1; }
+    .stat .lab { color:var(--muted); font-size:.85rem; text-transform:uppercase; letter-spacing:.05em; margin-top:8px; }
+    .stat .sub { color:var(--muted); font-size:.9rem; margin-top:4px; }
+    .bar { height:8px; background:var(--bg-soft); border-radius:6px; overflow:hidden; margin-top:18px; }
+    .bar > div { height:100%; width:0; background:linear-gradient(90deg,var(--accent),var(--accent-2)); transition:width .2s; }
+    .file-name { color:var(--muted); font-size:.9rem; margin-top:10px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="page-head">
+      <a class="back" href="../index.html">← Tutti gli strumenti</a>
+      <h1>🎚️ BPM & tonalità</h1>
+      <p>Carica un file audio (mp3, wav, m4a…) per stimare i battiti al minuto e la tonalità.</p>
+    </div>
+
+    <div class="panel">
+      <div class="drop" id="drop">
+        <div class="ico">🎵</div>
+        <p><b>Trascina qui un file audio</b><br><span class="muted">oppure clicca per sceglierlo</span></p>
+        <input type="file" id="file" accept="audio/*" hidden>
+      </div>
+      <div class="file-name" id="fileName"></div>
+      <div class="bar" id="barWrap" style="display:none"><div id="bar"></div></div>
+      <p class="muted" id="msg" style="margin-top:12px"></p>
+
+      <div class="results" id="results" style="display:none">
+        <div class="stat">
+          <div class="big" id="bpm">–</div>
+          <div class="lab">BPM</div>
+          <div class="sub" id="bpmSub"></div>
+        </div>
+        <div class="stat">
+          <div class="big" id="key">–</div>
+          <div class="lab">Tonalità stimata</div>
+          <div class="sub" id="keySub"></div>
+        </div>
+      </div>
+      <p class="legend muted" style="font-size:.8rem;margin-top:16px">
+        Le stime sono automatiche: il BPM può risultare doppio o metà del reale, e la tonalità è un'ipotesi
+        basata sulle note più presenti. Usale come punto di partenza. Tutto avviene nel tuo browser, nessun file viene caricato online.
+      </p>
+    </div>
+  </main>
+
+  <script src="../js/common.js"></script>
+  <script src="../js/bpm-key.js"></script>
+</body>
+</html>

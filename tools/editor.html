@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editor testi & accordi · Kantautore</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .editor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 820px) { .editor-grid { grid-template-columns: 1fr; } }
+    #src { width: 100%; min-height: 460px; resize: vertical; line-height: 1.7;
+      font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: .95rem; }
+    .preview { min-height: 460px; overflow:auto; }
+    .preview .line { display: flex; flex-wrap: wrap; align-items: flex-end; margin-bottom: 2px; }
+    .preview .seg { display: inline-flex; flex-direction: column; }
+    .preview .chord { color: var(--accent-2); font-weight: 800; font-size: .82rem;
+      font-family: "SF Mono", ui-monospace, monospace; min-height: 1.1em; white-space: pre; }
+    .preview .lyric { white-space: pre; }
+    .preview .blank { height: .9em; }
+    .preview .directive { color: var(--accent-3); font-weight: 700; margin: 10px 0 4px; }
+    .preview .comment { color: var(--muted); font-style: italic; }
+    .toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom: 14px; }
+    .toolbar .sp { flex: 1; }
+    .song-row { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:10px; cursor:pointer; }
+    .song-row:hover { background: var(--bg-soft); }
+    .song-row.active { background: var(--bg-soft); border:1px solid var(--accent); }
+    .song-row .t { flex:1; font-weight:600; }
+    .song-row .d { color: var(--muted); font-size:.78rem; }
+    .song-row .x { color: var(--muted); padding:2px 6px; border-radius:6px; }
+    .song-row .x:hover { color: var(--bad); background: var(--card); }
+    .key-display { font-family:"SF Mono",monospace; font-weight:800; color: var(--accent); padding: 0 6px; }
+    .hint { font-size:.82rem; color: var(--muted); margin-top:8px; }
+    .hint code { background: var(--bg-soft); padding:1px 6px; border-radius:5px; color: var(--accent-2); }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="page-head">
+      <a class="back" href="../index.html">← Tutti gli strumenti</a>
+      <h1>🎼 Editor testi & accordi</h1>
+      <p>Scrivi gli accordi tra parentesi quadre dentro al testo. Vengono mostrati sopra la parola giusta.</p>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn" id="newSong">+ Nuova canzone</button>
+      <input type="text" id="title" placeholder="Titolo della canzone" style="max-width:280px">
+      <span class="sp"></span>
+      <span class="muted" style="font-size:.85rem">Trasporta</span>
+      <button class="btn ghost" id="down">−½</button>
+      <span class="key-display" id="semis">0</span>
+      <button class="btn ghost" id="up">+½</button>
+      <button class="btn secondary" id="print">🖨 Stampa / PDF</button>
+      <button class="btn secondary" id="export">⬇ .txt</button>
+    </div>
+
+    <div class="editor-grid">
+      <div class="panel">
+        <h2>Testo</h2>
+        <textarea id="src" spellcheck="false" placeholder="{titolo: La mia canzone}
+{strofa}
+[Am]Cammino [F]da solo nella [C]notte
+[G]penso a [Am]te
+
+{ritornello}
+[F]E se [G]potessi [C]dirti che..."></textarea>
+        <div class="hint">
+          Accordi: <code>[Am]</code> <code>[C]</code> <code>[G7]</code> · Sezioni: <code>{strofa}</code> <code>{ritornello}</code> <code>{ponte}</code> · Commento: <code># nota</code>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Anteprima</h2>
+        <div class="preview" id="preview"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Le tue canzoni</h2>
+      <div id="songlist"></div>
+      <p class="hint">Le canzoni sono salvate solo su questo dispositivo (nel browser). Usa “.txt” o “Stampa/PDF” per conservarle altrove.</p>
+    </div>
+  </main>
+
+  <script src="../js/common.js"></script>
+  <script src="../js/editor.js"></script>
+</body>
+</html>

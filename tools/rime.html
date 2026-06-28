@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rime & metrica · Kantautore</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .cols { display:grid; grid-template-columns: 1fr 1fr; gap:18px; }
+    @media (max-width:820px){ .cols{ grid-template-columns:1fr; } }
+    .seg-btns { display:inline-flex; border:1px solid var(--border); border-radius:11px; overflow:hidden; }
+    .seg-btns button { background:transparent; color:var(--muted); border:none; padding:9px 16px; cursor:pointer; font-family:inherit; font-weight:600; font-size:.9rem; }
+    .seg-btns button.on { background:var(--card-hover); color:var(--text); }
+    .rhymes { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; max-height:430px; overflow:auto; }
+    .rhyme { background:var(--bg-soft); border:1px solid var(--border); border-radius:999px; padding:5px 13px; font-size:.95rem; cursor:default; }
+    .rhyme b { color:var(--accent); }
+    .status { color:var(--muted); font-size:.88rem; margin-top:6px; min-height:1.2em; }
+    /* metrica */
+    #lines .ml { display:flex; align-items:baseline; gap:12px; padding:6px 0; border-bottom:1px dashed var(--border); }
+    #lines .ml .cnt { font-family:"SF Mono",monospace; font-weight:800; color:var(--accent-2); min-width:2ch; text-align:right; }
+    #lines .ml .name { color:var(--muted); font-size:.8rem; min-width:108px; }
+    #lines .ml .syl { flex:1; }
+    #lines .ml .syl .w { margin-right:.55ch; }
+    #lines .ml .syl .s { opacity:.85; }
+    #lines .ml .syl .dot { color:var(--accent); opacity:.5; }
+    #metricInput { min-height:150px; font-size:1rem; line-height:1.7; }
+    .legend { font-size:.8rem; color:var(--muted); margin-top:10px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="page-head">
+      <a class="back" href="../index.html">← Tutti gli strumenti</a>
+      <h1>📖 Rime & metrica</h1>
+      <p>Trova parole che rimano e controlla quante sillabe ha ogni verso.</p>
+    </div>
+
+    <div class="cols">
+      <!-- RIME -->
+      <div class="panel">
+        <h2>Dizionario delle rime</h2>
+        <div class="row">
+          <div style="flex:2">
+            <label>Parola</label>
+            <input type="text" id="word" placeholder="es. amore" autocomplete="off">
+          </div>
+          <div class="grow0">
+            <label>&nbsp;</label>
+            <div class="seg-btns" id="mode">
+              <button data-mode="rima" class="on">Rima</button>
+              <button data-mode="assonanza">Assonanza</button>
+            </div>
+          </div>
+        </div>
+        <div class="status" id="rstatus">Carico il dizionario…</div>
+        <div class="rhymes" id="rhymes"></div>
+      </div>
+
+      <!-- METRICA -->
+      <div class="panel">
+        <h2>Conta-sillabe</h2>
+        <label>Incolla qui i tuoi versi (uno per riga)</label>
+        <textarea id="metricInput" spellcheck="false" placeholder="Cammino da solo nella notte
+penso ancora a te
+e il vento porta via la mia città"></textarea>
+        <div id="lines" style="margin-top:14px"></div>
+        <div class="legend">
+          Conteggio con <b>sinalefe</b> (vocali a contatto fra parole contano come una). Il nome del verso
+          (settenario, endecasillabo…) è una stima, utile come riferimento ritmico.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/common.js"></script>
+  <script src="../js/sillabe.js"></script>
+  <script src="../js/rime.js"></script>
+</body>
+</html>
