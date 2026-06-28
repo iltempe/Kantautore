@@ -8,6 +8,8 @@
   const worker = new Worker('../js/rime-worker.js');
   const wordEl = $('#word'), rhymesEl = $('#rhymes'), statusEl = $('#rstatus');
   let mode = 'rima', reqId = 0, dictReady = false;
+  const isEn = T.lang === 'en';
+  worker.postMessage({ type: 'init', lang: T.lang });   // carica il dizionario della lingua giusta
 
   worker.onmessage = (e) => {
     const d = e.data;
@@ -32,11 +34,13 @@
 
   function renderRhymes(d) {
     rhymesEl.innerHTML = '';
+    if (d.notFound) { statusEl.textContent = T.t('rime.notFound', { w: wordEl.value.trim() }); return; }
     if (!d.results.length) {
       statusEl.textContent = T.t(mode === 'assonanza' ? 'rime.noAsson' : 'rime.noRhyme', { w: wordEl.value.trim() });
       return;
     }
-    statusEl.textContent = T.t('rime.countWords', { n: d.results.length + (d.results.length === 200 ? '+' : ''), k: d.key });
+    const n = d.results.length + (d.results.length === 200 ? '+' : '');
+    statusEl.textContent = isEn ? T.t('rime.countWordsEn', { n }) : T.t('rime.countWords', { n, k: d.key });
     for (const r of d.results) {
       const span = document.createElement('span');
       span.className = 'rhyme';
@@ -95,26 +99,39 @@
     return { parts, count, metric, merges, tronca };
   }
 
+  // conteggio sillabe per l'inglese (senza sinalefe né nome del verso)
+  function metricLineEn(line) {
+    const words = line.trim().split(/\s+/).filter(w => /[a-z']/i.test(w));
+    if (!words.length) return null;
+    const count = words.reduce((a, w) => a + S.countSyllablesEn(w), 0);
+    return { en: true, words, count };
+  }
+
   function renderMetric() {
     linesEl.innerHTML = '';
     const lines = metricInput.value.split('\n');
     let any = false;
     for (const line of lines) {
-      const m = metricLine(line);
-      if (!m) {
-        if (line.trim() === '') continue;
-        continue;
-      }
+      if (line.trim() === '') continue;
+      const m = isEn ? metricLineEn(line) : metricLine(line);
+      if (!m) continue;
       any = true;
       const row = document.createElement('div'); row.className = 'ml';
-      const name = NAMES[m.metric] || '';
-      const sylHtml = m.parts.map(p =>
-        `<span class="w">` + p.syl.map(s => `<span class="s">${escapeHtml(s)}</span>`).join('<span class="dot">·</span>') + `</span>`
-      ).join(' ');
-      row.innerHTML =
-        `<span class="cnt">${m.metric}</span>` +
-        `<span class="name">${name}${m.tronca ? T.t('rime.tronco') : ''}</span>` +
-        `<span class="syl">${sylHtml}</span>`;
+      if (m.en) {
+        row.innerHTML =
+          `<span class="cnt">${m.count}</span>` +
+          `<span class="name"></span>` +
+          `<span class="syl">${escapeHtml(m.words.join(' '))}</span>`;
+      } else {
+        const name = NAMES[m.metric] || '';
+        const sylHtml = m.parts.map(p =>
+          `<span class="w">` + p.syl.map(s => `<span class="s">${escapeHtml(s)}</span>`).join('<span class="dot">·</span>') + `</span>`
+        ).join(' ');
+        row.innerHTML =
+          `<span class="cnt">${m.metric}</span>` +
+          `<span class="name">${name}${m.tronca ? T.t('rime.tronco') : ''}</span>` +
+          `<span class="syl">${sylHtml}</span>`;
+      }
       linesEl.appendChild(row);
     }
     if (!any) linesEl.innerHTML = `<p class="muted">${T.t('rime.emptyMetric')}</p>`;

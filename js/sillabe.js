@@ -106,7 +106,18 @@
 
   function countSyllables(word) { return syllabify(word).length; }
 
-  const api = { syllabify, countSyllables, rhymeKey, assonanceKey, normalize, isVowel, isAccented, plain };
+  // Conteggio sillabe per l'inglese (euristica classica, ~85% accurata).
+  function countSyllablesEn(word) {
+    let w = word.toLowerCase().replace(/[^a-z]/g, '');
+    if (!w) return 0;
+    if (w.length <= 3) return 1;
+    w = w.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+    w = w.replace(/^y/, '');
+    const m = w.match(/[aeiouy]{1,2}/g);
+    return m ? m.length : 1;
+  }
+
+  const api = { syllabify, countSyllables, countSyllablesEn, rhymeKey, assonanceKey, normalize, isVowel, isAccented, plain };
   g.SILLABE = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof self !== 'undefined' ? self : this);

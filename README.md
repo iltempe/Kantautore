@@ -29,8 +29,12 @@ python3 -m http.server 8000
 
 Interfaccia disponibile in **italiano** e **inglese**, con selettore IT/EN
 nell'header (la scelta resta salvata nel browser). I testi vivono in
-[`js/i18n.js`](js/i18n.js). Nota: il dizionario delle rime e il conta-sillabe
-sono pensati per la lingua italiana.
+[`js/i18n.js`](js/i18n.js).
+
+Anche **le rime e il conta-sillabe si adattano alla lingua**:
+- IT: lista di parole italiane + rime per terminazione, sillabazione con regole italiane.
+- EN: dizionario fonetico **CMU** (`data/words_en.txt`) — le rime usano la
+  pronuncia reale (così *love/move* giustamente non rimano), con conta-sillabe euristico.
 
 ## Pubblicazione
 
