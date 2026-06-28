@@ -34,7 +34,11 @@
 
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
-  footer.innerHTML = `<div class="wrap">Kantautore · strumenti gratuiti per chi scrive e produce canzoni · tutto gira nel tuo browser</div>`;
+  footer.innerHTML = `<div class="wrap">
+      Kantautore · strumenti gratuiti per chi scrive e produce canzoni · tutto gira nel tuo browser<br>
+      creato da <a href="https://github.com/iltempe" target="_blank" rel="noopener">@iltempe</a> ·
+      <a href="https://github.com/iltempe/Kantautore" target="_blank" rel="noopener">codice su GitHub</a>
+    </div>`;
   document.body.append(footer);
 
   window.KAN = { base };
