@@ -1,6 +1,7 @@
 // Metronomo (Web Audio, scheduling lookahead) + accordatore cromatico (autocorrelazione).
 (function () {
   const $ = s => document.querySelector(s);
+  const T = window.I18N;
   let actx = null;
   function ac() { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); return actx; }
 
@@ -50,13 +51,13 @@
     ac().resume();
     running = true; beatInBar = 0; nextNoteTime = ac().currentTime + 0.05;
     timer = setInterval(scheduler, lookahead);
-    $('#startBtn').textContent = '⏸ Ferma';
+    $('#startBtn').textContent = T.t('metro.stop');
     $('#startBtn').classList.add('secondary');
   }
   function stop() {
     running = false; clearInterval(timer);
     [...beatsEl.children].forEach(k => k.classList.remove('on'));
-    $('#startBtn').textContent = '▶ Avvia';
+    $('#startBtn').textContent = T.t('metro.start');
     $('#startBtn').classList.remove('secondary');
   }
   function setBpm(v) {
@@ -136,7 +137,7 @@
       needle.style.left = pos + '%';
       const inTune = Math.abs(smoothCents) < 5;
       needle.classList.toggle('intune', inTune);
-      $('#cents').textContent = (cents > 0 ? '+' : '') + cents + ' cent' + (inTune ? '  ✓ intonato' : '');
+      $('#cents').textContent = (cents > 0 ? '+' : '') + cents + ' ' + T.t('metro.centUnit') + (inTune ? '  ' + T.t('metro.inTune') : '');
       $('#tunerStatus').textContent = `${f.toFixed(1)} Hz`;
     }
     rafId = requestAnimationFrame(loop);
@@ -146,7 +147,7 @@
     if (tuning) {
       tuning = false; cancelAnimationFrame(rafId);
       if (stream) stream.getTracks().forEach(t => t.stop());
-      $('#tunerBtn').textContent = '🎙 Attiva microfono';
+      $('#tunerBtn').textContent = T.t('metro.micOn');
       $('#tunerStatus').textContent = '';
       return;
     }
@@ -158,11 +159,11 @@
       buf = new Float32Array(analyser.fftSize);
       src.connect(analyser);
       tuning = true;
-      $('#tunerBtn').textContent = '⏹ Stop microfono';
-      $('#tunerStatus').textContent = 'In ascolto…';
+      $('#tunerBtn').textContent = T.t('metro.micOff');
+      $('#tunerStatus').textContent = T.t('metro.listening');
       loop();
     } catch (e) {
-      $('#tunerStatus').textContent = 'Microfono non disponibile o permesso negato.';
+      $('#tunerStatus').textContent = T.t('metro.micErr');
     }
   }
   $('#tunerBtn').onclick = toggleTuner;

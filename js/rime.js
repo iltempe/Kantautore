@@ -1,6 +1,7 @@
 // Pagina Rime & metrica.
 (function () {
   const S = window.SILLABE;
+  const T = window.I18N;
   const $ = s => document.querySelector(s);
 
   // ---------- RIME (via worker) ----------
@@ -12,10 +13,10 @@
     const d = e.data;
     if (d.type === 'ready') {
       dictReady = true;
-      statusEl.textContent = `Dizionario pronto · ${d.count.toLocaleString('it-IT')} parole`;
+      statusEl.textContent = T.t('rime.ready', { n: d.count.toLocaleString(T.locale) });
       if (wordEl.value.trim()) doSearch();
     } else if (d.type === 'error') {
-      statusEl.textContent = 'Errore nel caricare il dizionario.';
+      statusEl.textContent = T.t('rime.err');
     } else if (d.type === 'result') {
       if (d.notReady) return;
       renderRhymes(d);
@@ -24,7 +25,7 @@
 
   function doSearch() {
     const q = wordEl.value.trim();
-    if (!q) { rhymesEl.innerHTML = ''; statusEl.textContent = dictReady ? '' : 'Carico il dizionario…'; return; }
+    if (!q) { rhymesEl.innerHTML = ''; statusEl.textContent = dictReady ? '' : T.t('rime.loading'); return; }
     if (!dictReady) return;
     worker.postMessage({ type: 'search', query: q, mode, id: ++reqId });
   }
@@ -32,16 +33,16 @@
   function renderRhymes(d) {
     rhymesEl.innerHTML = '';
     if (!d.results.length) {
-      statusEl.textContent = `Nessuna ${mode} trovata per “${wordEl.value.trim()}”.`;
+      statusEl.textContent = T.t(mode === 'assonanza' ? 'rime.noAsson' : 'rime.noRhyme', { w: wordEl.value.trim() });
       return;
     }
-    statusEl.textContent = `${d.results.length}${d.results.length === 200 ? '+' : ''} parole · finale «${d.key}»`;
+    statusEl.textContent = T.t('rime.countWords', { n: d.results.length + (d.results.length === 200 ? '+' : ''), k: d.key });
     for (const r of d.results) {
       const span = document.createElement('span');
       span.className = 'rhyme';
       const sufStart = r.w.length - r.suf;
       span.innerHTML = escapeHtml(r.w.slice(0, sufStart)) + '<b>' + escapeHtml(r.w.slice(sufStart)) + '</b>';
-      span.title = `${r.syl} sillabe`;
+      span.title = T.t('rime.sylTitle', { n: r.syl });
       rhymesEl.appendChild(span);
     }
   }
@@ -112,11 +113,11 @@
       ).join(' ');
       row.innerHTML =
         `<span class="cnt">${m.metric}</span>` +
-        `<span class="name">${name}${m.tronca ? ' (tronco)' : ''}</span>` +
+        `<span class="name">${name}${m.tronca ? T.t('rime.tronco') : ''}</span>` +
         `<span class="syl">${sylHtml}</span>`;
       linesEl.appendChild(row);
     }
-    if (!any) linesEl.innerHTML = '<p class="muted">Scrivi qualche verso qui sopra per vedere il conteggio.</p>';
+    if (!any) linesEl.innerHTML = `<p class="muted">${T.t('rime.emptyMetric')}</p>`;
   }
 
   metricInput.addEventListener('input', debounce(renderMetric, 120));

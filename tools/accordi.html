@@ -59,13 +59,13 @@
 <body>
   <main class="wrap">
     <div class="page-head">
-      <a class="back" href="../index.html">← Tutti gli strumenti</a>
-      <h1>🎹 Progressioni & emozioni</h1>
-      <p>Parti da come ti vuoi sentire. Scegli un'emozione e ricevi progressioni di accordi che la evocano — poi esplora il grafo per muoverti da un accordo all'altro.</p>
+      <a class="back" href="../index.html" data-i18n="common.back">← Tutti gli strumenti</a>
+      <h1 data-i18n="accordi.h1">🎹 Progressioni & emozioni</h1>
+      <p data-i18n="accordi.sub">Parti da come ti vuoi sentire. Scegli un'emozione e ricevi progressioni di accordi che la evocano — poi esplora il grafo per muoverti da un accordo all'altro.</p>
     </div>
 
     <div class="panel">
-      <h2>Che emozione vuoi trasmettere?</h2>
+      <h2 data-i18n="accordi.ask">Che emozione vuoi trasmettere?</h2>
       <div class="emotions" id="emotions"></div>
       <div class="emo-info" id="emoInfo"></div>
     </div>
@@ -73,7 +73,7 @@
     <div class="panel">
       <div class="controls">
         <div class="f">
-          <label>Tonalità</label>
+          <label data-i18n="accordi.key">Tonalità</label>
           <select id="key">
             <option>C</option><option>C#</option><option>D</option><option>D#</option>
             <option>E</option><option>F</option><option>F#</option><option>G</option>
@@ -81,50 +81,51 @@
           </select>
         </div>
         <div class="f">
-          <label>Modo</label>
+          <label data-i18n="accordi.mode">Modo</label>
           <select id="mode">
-            <option value="major">Maggiore</option>
-            <option value="minor">Minore</option>
+            <option value="major" data-i18n="accordi.major">Maggiore</option>
+            <option value="minor" data-i18n="accordi.minor">Minore</option>
           </select>
         </div>
         <div class="f">
           <label>&nbsp;</label>
-          <label class="switch"><input type="checkbox" id="colore"> accordi colorati (settime)</label>
+          <label class="switch"><input type="checkbox" id="colore"> <span data-i18n="accordi.colored">accordi colorati (settime)</span></label>
         </div>
         <div class="f" style="margin-left:auto">
           <label>&nbsp;</label>
           <div class="toolbar2">
-            <button class="btn secondary" id="gen">🎲 Genera</button>
-            <button class="btn" id="play">▶ Ascolta</button>
+            <button class="btn secondary" id="gen" data-i18n="accordi.gen">🎲 Genera</button>
+            <button class="btn" id="play" data-i18n="accordi.play">▶ Ascolta</button>
           </div>
         </div>
       </div>
     </div>
 
     <div class="panel">
-      <h2>La tua progressione</h2>
+      <h2 data-i18n="accordi.yourProg">La tua progressione</h2>
       <div class="prog" id="prog"><span class="empty">Scegli un'emozione e premi “Genera”, oppure clicca gli accordi nel grafo qui sotto.</span></div>
       <div class="toolbar2" style="margin-bottom:16px">
-        <button class="btn ghost" id="undo">↶ Togli ultimo</button>
-        <button class="btn ghost" id="clear">🗑 Svuota</button>
-        <button class="btn ghost" id="copy">📋 Copia accordi</button>
+        <button class="btn ghost" id="undo" data-i18n="accordi.undo">↶ Togli ultimo</button>
+        <button class="btn ghost" id="clear" data-i18n="accordi.clear">🗑 Svuota</button>
+        <button class="btn ghost" id="copy" data-i18n="accordi.copy">📋 Copia accordi</button>
       </div>
 
       <div class="graph-wrap">
         <svg class="graph" id="graph" viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" aria-label="Grafo dei movimenti tra accordi"></svg>
       </div>
-      <p class="legend" style="margin-top:6px">
+      <p class="legend" style="margin-top:6px" data-i18n-html="accordi.legend">
         Il flusso naturale dell'armonia va da sinistra a destra: <b>Tonica</b> (casa, riposo) →
         <b>Sottodominante</b> (allontanamento) → <b>Dominante</b> (tensione) → torna a <b>Tonica</b>.
       </p>
     </div>
 
     <div class="panel">
-      <h2 id="ideeTitle">Progressioni famose</h2>
+      <h2 id="ideeTitle" data-i18n="accordi.famous">Progressioni famose</h2>
       <div class="presets" id="presets"></div>
     </div>
   </main>
 
+  <script src="../js/i18n.js"></script>
   <script src="../js/common.js"></script>
   <script src="../js/accordi.js"></script>
 </body>

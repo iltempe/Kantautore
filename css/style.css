@@ -64,6 +64,11 @@ a:hover { text-decoration: underline; }
 }
 .nav a:hover { background: var(--card); color: var(--text); text-decoration: none; }
 .nav a.active { color: var(--text); background: var(--card); }
+.lang { display: flex; gap: 2px; margin-left: 14px; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; }
+.lang button { background: transparent; border: none; color: var(--muted); cursor: pointer; font-family: inherit;
+  font-weight: 700; font-size: .78rem; padding: 6px 9px; }
+.lang button:hover { color: var(--text); background: var(--card); }
+.lang button.on { background: var(--accent); color: #1a1622; }
 
 /* Hero */
 .hero { padding: 56px 0 28px; text-align: center; }
@@ -143,4 +148,5 @@ footer.site-footer { border-top: 1px solid var(--border); color: var(--muted); p
 @media (max-width: 560px) {
   .hero h1 { font-size: 2rem; }
   .nav { display: none; }
+  .lang { margin-left: auto; }
 }

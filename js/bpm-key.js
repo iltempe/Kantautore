@@ -1,6 +1,7 @@
 // BPM & tonalità: decodifica l'audio, manda i campioni al worker, mostra i risultati.
 (function () {
   const $ = s => document.querySelector(s);
+  const T = window.I18N;
   const drop = $('#drop'), fileInput = $('#file');
   const worker = new Worker('../js/bpm-key-worker.js');
 
@@ -17,7 +18,7 @@
     $('#results').style.display = 'none';
     $('#barWrap').style.display = 'block';
     $('#bar').style.width = '0%';
-    $('#msg').textContent = 'Decodifico l\'audio…';
+    $('#msg').textContent = T.t('bpm.decoding');
 
     try {
       const buf = await file.arrayBuffer();
@@ -38,10 +39,10 @@
       const maxSamples = audio.sampleRate * 90;
       if (mono.length > maxSamples) mono = mono.slice(0, maxSamples);
 
-      $('#msg').textContent = 'Analizzo tempo e tonalità…';
+      $('#msg').textContent = T.t('bpm.analyzing');
       worker.postMessage({ data: mono, sampleRate: audio.sampleRate }, [mono.buffer]);
     } catch (e) {
-      $('#msg').textContent = 'Non riesco a leggere questo file audio. Prova con un mp3 o wav.';
+      $('#msg').textContent = T.t('bpm.readErr');
       $('#barWrap').style.display = 'none';
     }
   }
@@ -55,12 +56,13 @@
       $('#msg').textContent = '';
       $('#results').style.display = 'grid';
       $('#bpm').textContent = d.bpm;
-      $('#bpmSub').textContent = `≈ ${(d.bpm/2).toFixed(0)} o ${(d.bpm*2)} se ti suona dimezzato/doppio`;
+      $('#bpmSub').textContent = T.t('bpm.bpmSub', { half: (d.bpm/2).toFixed(0), double: d.bpm*2 });
       const flat = FLAT[d.key] ? ` (${FLAT[d.key]})` : '';
-      $('#key').innerHTML = d.key.replace('#','♯') + ' <span style="font-size:1.4rem;color:var(--muted)">' + d.mode + '</span>';
-      $('#keySub').textContent = `affidabilità ~${d.confidence}%${flat ? ' · ' + d.key + flat : ''}`;
+      const modeLabel = d.mode === 'minore' ? T.t('bpm.minor') : T.t('bpm.major');
+      $('#key').innerHTML = d.key.replace('#','♯') + ' <span style="font-size:1.4rem;color:var(--muted)">' + modeLabel + '</span>';
+      $('#keySub').textContent = T.t('bpm.keySub', { c: d.confidence }) + (flat ? ' · ' + d.key + flat : '');
     } else if (d.type === 'error') {
-      $('#msg').textContent = 'Errore durante l\'analisi.';
+      $('#msg').textContent = T.t('bpm.analyzeErr');
       $('#barWrap').style.display = 'none';
     }
   };

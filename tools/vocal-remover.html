@@ -20,13 +20,13 @@
 <body>
   <main class="wrap">
     <div class="page-head">
-      <a class="back" href="../index.html">← Tutti gli strumenti</a>
-      <h1>🎤 Vocal remover <span class="pill" style="color:var(--bad)">sperimentale</span></h1>
-      <p>Toglie i suoni al centro dello stereo (di solito la voce) per ottenere una base karaoke.</p>
+      <a class="back" href="../index.html" data-i18n="common.back">← Tutti gli strumenti</a>
+      <h1><span data-i18n="vocal.h1">🎤 Vocal remover</span> <span class="pill" style="color:var(--bad)" data-i18n="vocal.exp">sperimentale</span></h1>
+      <p data-i18n="vocal.sub">Toglie i suoni al centro dello stereo (di solito la voce) per ottenere una base karaoke.</p>
     </div>
 
     <div class="panel">
-      <div class="note-box" style="margin-bottom:18px">
+      <div class="note-box" style="margin-bottom:18px" data-i18n-html="vocal.note">
         <b>Come funziona, in onestà.</b> Questo strumento sottrae il canale destro dal sinistro:
         sparisce tutto ciò che è registrato “al centro” (spesso voce, ma anche cassa e basso).
         Funziona bene solo su brani <b>stereo</b> con la voce centrata, e il risultato è in mono.
@@ -35,22 +35,23 @@
 
       <div class="drop" id="drop">
         <div class="ico">🎵</div>
-        <p><b>Trascina qui un brano stereo</b><br><span class="muted">oppure clicca per sceglierlo</span></p>
+        <p data-i18n-html="vocal.drop"><b>Trascina qui un brano stereo</b><br><span class="muted">oppure clicca per sceglierlo</span></p>
         <input type="file" id="file" accept="audio/*" hidden>
       </div>
       <p class="muted" id="msg" style="margin-top:12px"></p>
 
       <div id="player" style="display:none">
         <div class="ab">
-          <button class="btn secondary" id="playOrig">▶ Originale</button>
-          <button class="btn" id="playKar">▶ Base karaoke</button>
-          <button class="btn ghost" id="stop">⏹ Stop</button>
+          <button class="btn secondary" id="playOrig" data-i18n="vocal.orig">▶ Originale</button>
+          <button class="btn" id="playKar" data-i18n="vocal.kar">▶ Base karaoke</button>
+          <button class="btn ghost" id="stop" data-i18n="vocal.stop">⏹ Stop</button>
         </div>
-        <button class="btn secondary" id="download" style="width:100%">⬇ Scarica base karaoke (.wav)</button>
+        <button class="btn secondary" id="download" style="width:100%" data-i18n="vocal.download">⬇ Scarica base karaoke (.wav)</button>
       </div>
     </div>
   </main>
 
+  <script src="../js/i18n.js"></script>
   <script src="../js/common.js"></script>
   <script src="../js/vocal.js"></script>
 </body>

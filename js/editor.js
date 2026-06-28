@@ -1,6 +1,7 @@
 // Editor testi & accordi — sintassi ChordPro semplificata, salvataggio in localStorage.
 (function () {
   const LS = 'kan_songs_v1';
+  const T = window.I18N;
   const $ = s => document.querySelector(s);
   const srcEl = $('#src'), titleEl = $('#title'), previewEl = $('#preview'),
         listEl = $('#songlist'), semisEl = $('#semis');
@@ -122,13 +123,13 @@
   }
   function renderList() {
     listEl.innerHTML = '';
-    if (!db.songs.length) { listEl.innerHTML = '<p class="muted">Nessuna canzone ancora. Premi “+ Nuova canzone”.</p>'; return; }
+    if (!db.songs.length) { listEl.innerHTML = `<p class="muted">${T.t('editor.none')}</p>`; return; }
     for (const s of db.songs) {
       const row = document.createElement('div');
       row.className = 'song-row' + (s.id === currentId ? ' active' : '');
       const d = new Date(s.updated);
-      row.innerHTML = `<span class="t">${s.title ? escapeHtml(s.title) : '<span class="muted">(senza titolo)</span>'}</span>
-        <span class="d">${d.toLocaleDateString('it-IT')} ${d.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}</span>
+      row.innerHTML = `<span class="t">${s.title ? escapeHtml(s.title) : `<span class="muted">${T.t('common.untitled')}</span>`}</span>
+        <span class="d">${d.toLocaleDateString(T.locale)} ${d.toLocaleTimeString(T.locale, { hour: '2-digit', minute: '2-digit' })}</span>
         <span class="x" title="Elimina">✕</span>`;
       row.querySelector('.t').onclick = () => open(s.id);
       row.querySelector('.d').onclick = () => open(s.id);
@@ -138,7 +139,7 @@
   }
   function del(id) {
     const s = db.songs.find(x => x.id === id);
-    if (!confirm(`Eliminare “${s?.title || 'senza titolo'}”?`)) return;
+    if (!confirm(T.t('editor.confirmDel', { t: s?.title || T.t('common.untitled') }))) return;
     db.songs = db.songs.filter(x => x.id !== id); save();
     if (currentId === id) {
       if (db.songs.length) open(db.songs[0].id);
@@ -157,7 +158,7 @@
     const blob = new Blob([(s.title ? s.title + '\n\n' : '') + out], { type: 'text/plain' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = (s.title || 'canzone').replace(/[^\w\-]+/g, '_') + '.txt';
+    a.download = (s.title || T.t('editor.defName')).replace(/[^\w\-]+/g, '_') + '.txt';
     a.click(); URL.revokeObjectURL(a.href);
   }
   function printSong() {

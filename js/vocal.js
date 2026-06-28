@@ -1,6 +1,7 @@
 // Vocal remover lite: cancellazione di fase (L - R) -> base karaoke mono. Anteprima + export WAV.
 (function () {
   const $ = s => document.querySelector(s);
+  const T = window.I18N;
   const drop = $('#drop'), fileInput = $('#file');
   let actx = null, origBuf = null, karBuf = null, source = null, fileName = 'base';
 
@@ -14,14 +15,14 @@
 
   async function handle(file) {
     fileName = file.name.replace(/\.[^.]+$/, '');
-    $('#msg').textContent = 'Elaboro l\'audio…';
+    $('#msg').textContent = T.t('vocal.processing');
     $('#player').style.display = 'none';
     try {
       const data = await file.arrayBuffer();
       origBuf = await ac().decodeAudioData(data);
 
       if (origBuf.numberOfChannels < 2) {
-        $('#msg').innerHTML = '⚠️ Questo file è <b>mono</b>: la cancellazione del centro non può funzionare. Serve un brano stereo.';
+        $('#msg').innerHTML = T.t('vocal.mono');
         return;
       }
       const L = origBuf.getChannelData(0), R = origBuf.getChannelData(1);
@@ -32,10 +33,10 @@
       karBuf = ac().createBuffer(1, n, origBuf.sampleRate);
       karBuf.getChannelData(0).set(out);
 
-      $('#msg').textContent = '✅ Pronto. Confronta originale e base karaoke, poi scarica.';
+      $('#msg').textContent = T.t('vocal.ready');
       $('#player').style.display = 'block';
     } catch (e) {
-      $('#msg').textContent = 'Non riesco a leggere questo file. Prova con un mp3 o wav stereo.';
+      $('#msg').textContent = T.t('vocal.readErr');
     }
   }
 

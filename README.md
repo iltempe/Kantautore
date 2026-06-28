@@ -25,6 +25,13 @@ python3 -m http.server 8000
 > Serve un server (non aprire i file con `file://`) perché i Web Worker e il
 > caricamento del dizionario richiedono richieste HTTP.
 
+## Lingue
+
+Interfaccia disponibile in **italiano** e **inglese**, con selettore IT/EN
+nell'header (la scelta resta salvata nel browser). I testi vivono in
+[`js/i18n.js`](js/i18n.js). Nota: il dizionario delle rime e il conta-sillabe
+sono pensati per la lingua italiana.
+
 ## Pubblicazione
 
 Caricabile così com'è su qualsiasi hosting statico gratuito: GitHub Pages,

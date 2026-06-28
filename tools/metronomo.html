@@ -34,25 +34,25 @@
 <body>
   <main class="wrap">
     <div class="page-head">
-      <a class="back" href="../index.html">← Tutti gli strumenti</a>
-      <h1>🥁 Metronomo & accordatore</h1>
-      <p>Tieni il tempo mentre suoni e accorda lo strumento col microfono.</p>
+      <a class="back" href="../index.html" data-i18n="common.back">← Tutti gli strumenti</a>
+      <h1 data-i18n="metro.h1">🥁 Metronomo & accordatore</h1>
+      <p data-i18n="metro.sub">Tieni il tempo mentre suoni e accorda lo strumento col microfono.</p>
     </div>
 
     <div class="cols">
       <!-- METRONOMO -->
       <div class="panel">
-        <h2>Metronomo</h2>
+        <h2 data-i18n="metro.metronome">Metronomo</h2>
         <div class="bpm"><span id="bpmVal">100</span> <small>BPM</small></div>
         <div class="beats" id="beats"></div>
         <input type="range" id="bpmRange" min="30" max="260" value="100">
         <div class="ctr">
           <button class="btn ghost" id="bpmMinus">−</button>
-          <button class="btn" id="startBtn" style="min-width:120px">▶ Avvia</button>
+          <button class="btn" id="startBtn" style="min-width:120px" data-i18n="metro.start">▶ Avvia</button>
           <button class="btn ghost" id="bpmPlus">+</button>
         </div>
         <div class="ctr" style="margin-top:14px">
-          <button class="btn secondary" id="tap">👆 Tap tempo</button>
+          <button class="btn secondary" id="tap" data-i18n="metro.tap">👆 Tap tempo</button>
           <select id="sig" style="max-width:130px">
             <option value="4">4/4</option>
             <option value="3">3/4</option>
@@ -61,33 +61,34 @@
             <option value="1">click</option>
           </select>
           <label style="display:flex;align-items:center;gap:6px;margin:0;color:var(--muted)">
-            <input type="checkbox" id="accent" checked style="width:auto"> accento sul 1
+            <input type="checkbox" id="accent" checked style="width:auto"> <span data-i18n="metro.accent">accento sul 1</span>
           </label>
         </div>
       </div>
 
       <!-- ACCORDATORE -->
       <div class="panel">
-        <h2>Accordatore</h2>
+        <h2 data-i18n="metro.tuner">Accordatore</h2>
         <div class="note" id="noteName">–<small id="octave"></small></div>
         <div class="gauge">
           <div class="scale"></div>
           <div class="mid"></div>
           <div class="needle" id="needle"></div>
         </div>
-        <div class="cents" id="cents">— cent</div>
+        <div class="cents" id="cents" data-i18n="metro.cents">— cent</div>
         <div class="ctr">
-          <button class="btn" id="tunerBtn">🎙 Attiva microfono</button>
+          <button class="btn" id="tunerBtn" data-i18n="metro.micOn">🎙 Attiva microfono</button>
         </div>
         <div class="tuner-status" id="tunerStatus" style="margin-top:10px"></div>
         <div class="strings" id="strings"></div>
-        <p class="legend muted" style="font-size:.8rem;margin-top:12px;text-align:center">
+        <p class="legend muted" style="font-size:.8rem;margin-top:12px;text-align:center" data-i18n="metro.strings">
           Corde chitarra standard: E2 · A2 · D3 · G3 · B3 · E4
         </p>
       </div>
     </div>
   </main>
 
+  <script src="../js/i18n.js"></script>
   <script src="../js/common.js"></script>
   <script src="../js/metronomo.js"></script>
 </body>

@@ -36,50 +36,51 @@
 <body>
   <main class="wrap">
     <div class="page-head">
-      <a class="back" href="../index.html">← Tutti gli strumenti</a>
-      <h1>🎼 Editor testi & accordi</h1>
-      <p>Scrivi gli accordi tra parentesi quadre dentro al testo. Vengono mostrati sopra la parola giusta.</p>
+      <a class="back" href="../index.html" data-i18n="common.back">← Tutti gli strumenti</a>
+      <h1 data-i18n="editor.h1">🎼 Editor testi & accordi</h1>
+      <p data-i18n="editor.sub">Scrivi gli accordi tra parentesi quadre dentro al testo. Vengono mostrati sopra la parola giusta.</p>
     </div>
 
     <div class="toolbar">
-      <button class="btn" id="newSong">+ Nuova canzone</button>
-      <input type="text" id="title" placeholder="Titolo della canzone" style="max-width:280px">
+      <button class="btn" id="newSong" data-i18n="editor.new">+ Nuova canzone</button>
+      <input type="text" id="title" data-i18n-ph="editor.titlePh" placeholder="Titolo della canzone" style="max-width:280px">
       <span class="sp"></span>
-      <span class="muted" style="font-size:.85rem">Trasporta</span>
+      <span class="muted" style="font-size:.85rem" data-i18n="editor.transpose">Trasporta</span>
       <button class="btn ghost" id="down">−½</button>
       <span class="key-display" id="semis">0</span>
       <button class="btn ghost" id="up">+½</button>
-      <button class="btn secondary" id="print">🖨 Stampa / PDF</button>
-      <button class="btn secondary" id="export">⬇ .txt</button>
+      <button class="btn secondary" id="print" data-i18n="editor.print">🖨 Stampa / PDF</button>
+      <button class="btn secondary" id="export" data-i18n="editor.export">⬇ .txt</button>
     </div>
 
     <div class="editor-grid">
       <div class="panel">
-        <h2>Testo</h2>
-        <textarea id="src" spellcheck="false" placeholder="{titolo: La mia canzone}
+        <h2 data-i18n="editor.lyrics">Testo</h2>
+        <textarea id="src" spellcheck="false" data-i18n-ph="editor.srcPh" placeholder="{titolo: La mia canzone}
 {strofa}
 [Am]Cammino [F]da solo nella [C]notte
 [G]penso a [Am]te
 
 {ritornello}
 [F]E se [G]potessi [C]dirti che..."></textarea>
-        <div class="hint">
+        <div class="hint" data-i18n-html="editor.hint">
           Accordi: <code>[Am]</code> <code>[C]</code> <code>[G7]</code> · Sezioni: <code>{strofa}</code> <code>{ritornello}</code> <code>{ponte}</code> · Commento: <code># nota</code>
         </div>
       </div>
       <div class="panel">
-        <h2>Anteprima</h2>
+        <h2 data-i18n="editor.preview">Anteprima</h2>
         <div class="preview" id="preview"></div>
       </div>
     </div>
 
     <div class="panel">
-      <h2>Le tue canzoni</h2>
+      <h2 data-i18n="editor.songs">Le tue canzoni</h2>
       <div id="songlist"></div>
-      <p class="hint">Le canzoni sono salvate solo su questo dispositivo (nel browser). Usa “.txt” o “Stampa/PDF” per conservarle altrove.</p>
+      <p class="hint" data-i18n="editor.songsHint">Le canzoni sono salvate solo su questo dispositivo (nel browser). Usa “.txt” o “Stampa/PDF” per conservarle altrove.</p>
     </div>
   </main>
 
+  <script src="../js/i18n.js"></script>
   <script src="../js/common.js"></script>
   <script src="../js/editor.js"></script>
 </body>

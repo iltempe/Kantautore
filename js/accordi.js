@@ -2,6 +2,7 @@
 // Grafo dei movimenti (armonia funzionale) + generazione + ascolto Web Audio.
 (function () {
   const $ = s => document.querySelector(s);
+  const T = window.I18N;
   const SHARP = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
   const FLAT  = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
   const FLAT_MAJOR = new Set([1,3,5,6,8,10]);
@@ -126,9 +127,9 @@
           <path d="M0 0 L10 5 L0 10 z" fill="var(--emo-c, var(--accent-2))"/>
         </marker>
       </defs>
-      <text class="zone-label" x="120" y="24">Tonica</text>
-      <text class="zone-label" x="360" y="24">Sottodominante</text>
-      <text class="zone-label" x="600" y="24">Dominante</text>`;
+      <text class="zone-label" x="120" y="24">${T.t('accordi.tonic')}</text>
+      <text class="zone-label" x="360" y="24">${T.t('accordi.subdom')}</text>
+      <text class="zone-label" x="600" y="24">${T.t('accordi.dom')}</text>`;
     const seen = new Set();
     for (const [from, list] of Object.entries(MOVES[mode])) {
       for (const [to] of list) {
@@ -178,7 +179,7 @@
   // ---------- PROGRESSIONE ----------
   function renderProg() {
     const el = $('#prog');
-    if (!prog.length) { el.innerHTML = '<span class="empty">Scegli un\'emozione e premi “Genera”, oppure clicca gli accordi nel grafo qui sotto.</span>'; return; }
+    if (!prog.length) { el.innerHTML = `<span class="empty">${T.t('accordi.empty')}</span>`; return; }
     el.innerHTML = prog.map((idx, n) =>
       `<span class="chip" data-n="${n}"><span class="r">${chords[idx].roman}</span>${chordName(idx)}</span>`).join('');
   }
@@ -239,7 +240,7 @@
   // ---------- EMOZIONI UI ----------
   function renderEmotions() {
     $('#emotions').innerHTML = EMOTIONS.map(em =>
-      `<button class="emo" data-id="${em.id}" style="--emo-c:${em.color}"><span class="e">${em.e}</span>${em.label}</button>`).join('');
+      `<button class="emo" data-id="${em.id}" style="--emo-c:${em.color}"><span class="e">${em.e}</span>${T.t('accordi.emo.' + em.id + '.label')}</button>`).join('');
     $('#emotions').querySelectorAll('.emo').forEach(b => b.onclick = () => selectEmotion(b.dataset.id));
   }
   function selectEmotion(id) {
@@ -250,37 +251,39 @@
     $('#emotions').querySelectorAll('.emo').forEach(b => b.classList.toggle('on', emotion && b.dataset.id === id));
 
     const info = $('#emoInfo');
-    if (!emotion) { info.classList.remove('show'); $('#ideeTitle').textContent = 'Progressioni famose'; renderPresets(); return; }
+    if (!emotion) { info.classList.remove('show'); $('#ideeTitle').textContent = T.t('accordi.famous'); renderPresets(); return; }
 
     // imposta il modo dell'emozione
     mode = emotion.mode; $('#mode').value = mode;
     if (emotion.color7) { colored = true; $('#colore').checked = true; }
     buildChords(); renderGraph();
 
+    const label = T.t('accordi.emo.' + emotion.id + '.label');
     info.classList.add('show');
     info.innerHTML =
-      `<h3>${emotion.e} ${emotion.label}</h3>` +
-      `<div class="meta"><span>Modo: <b>${mode === 'major' ? 'maggiore' : 'minore'}</b></span>` +
-      `<span>Tempo suggerito: <b>${emotion.bpm} BPM</b></span><span>Carattere: <b>${emotion.feel}</b></span></div>` +
-      `<p>${emotion.why}</p>`;
+      `<h3>${emotion.e} ${label}</h3>` +
+      `<div class="meta"><span>${T.t('accordi.modeLbl')} <b>${T.t(mode === 'major' ? 'accordi.major' : 'accordi.minor')}</b></span>` +
+      `<span>${T.t('accordi.tempoLbl')} <b>${emotion.bpm} ${T.t('accordi.bpmUnit')}</b></span>` +
+      `<span>${T.t('accordi.charLbl')} <b>${T.t('accordi.emo.' + emotion.id + '.feel')}</b></span></div>` +
+      `<p>${T.t('accordi.emo.' + emotion.id + '.why')}</p>`;
 
     // proponi subito una progressione dell'emozione
     generate();
     // mostra le idee dell'emozione nei preset
-    $('#ideeTitle').textContent = `Idee per “${emotion.label}”`;
+    $('#ideeTitle').textContent = T.t('accordi.ideasFor', { x: label });
     renderPresets();
   }
 
   // ---------- PRESET / IDEE ----------
   const PRESETS = {
     major: [
-      { name:'Pop', d:'I–V–vi–IV', seq:[0,4,5,3] }, { name:"Anni '50", d:'I–vi–IV–V', seq:[0,5,3,4] },
-      { name:'Jazz', d:'ii–V–I', seq:[1,4,0] }, { name:'Folk', d:'I–IV–V', seq:[0,3,4] },
-      { name:'Canone', d:'I–V–vi–iii–IV–I–IV–V', seq:[0,4,5,2,3,0,3,4] },
+      { k:'pop', d:'I–V–vi–IV', seq:[0,4,5,3] }, { k:'fifties', d:'I–vi–IV–V', seq:[0,5,3,4] },
+      { k:'jazz', d:'ii–V–I', seq:[1,4,0] }, { k:'folk', d:'I–IV–V', seq:[0,3,4] },
+      { k:'canon', d:'I–V–vi–iii–IV–I–IV–V', seq:[0,4,5,2,3,0,3,4] },
     ],
     minor: [
-      { name:'Pop minore', d:'i–VI–III–VII', seq:[0,5,2,6] }, { name:'Andaluso', d:'i–VII–VI–V', seq:[0,6,5,4] },
-      { name:'Drammatico', d:'i–iv–V', seq:[0,3,4] }, { name:'Malinconico', d:'i–VI–iv–V', seq:[0,5,3,4] },
+      { k:'minpop', d:'i–VI–III–VII', seq:[0,5,2,6] }, { k:'andalusian', d:'i–VII–VI–V', seq:[0,6,5,4] },
+      { k:'dramatic', d:'i–iv–V', seq:[0,3,4] }, { k:'melancholic', d:'i–VI–iv–V', seq:[0,5,3,4] },
     ],
   };
   function romanSeq(seq) { return seq.map(i => chords[i].roman).join('–'); }
@@ -289,7 +292,7 @@
     if (emotion) items = emotion.progs.map(seq => ({ name: romanSeq(seq), d: seq.map(i => chordName(i)).join(' '), seq }));
     else items = PRESETS[mode];
     $('#presets').innerHTML = items.map((p, n) =>
-      `<button data-n="${n}"><b>${p.name}</b> <span class="d">${p.d}</span></button>`).join('');
+      `<button data-n="${n}"><b>${p.k ? T.t('accordi.preset.' + p.k) : p.name}</b> <span class="d">${p.d}</span></button>`).join('');
     const list = items;
     $('#presets').querySelectorAll('button').forEach(b => b.onclick = () => {
       prog = list[+b.dataset.n].seq.slice(); selected = null; renderProg(); highlight();
@@ -299,7 +302,7 @@
   // ---------- EVENTI ----------
   function rebuildAll() { keyRoot = $('#key').selectedIndex; mode = $('#mode').value; buildChords(); renderGraph(); renderProg(); renderPresets(); }
   $('#key').onchange = () => { keyRoot = $('#key').selectedIndex; buildChords(); renderGraph(); renderProg(); renderPresets(); };
-  $('#mode').onchange = () => { emotion = null; document.documentElement.style.setProperty('--emo-c',''); $('#emotions').querySelectorAll('.emo').forEach(b=>b.classList.remove('on')); $('#emoInfo').classList.remove('show'); $('#ideeTitle').textContent='Progressioni famose'; rebuildAll(); };
+  $('#mode').onchange = () => { emotion = null; document.documentElement.style.setProperty('--emo-c',''); $('#emotions').querySelectorAll('.emo').forEach(b=>b.classList.remove('on')); $('#emoInfo').classList.remove('show'); $('#ideeTitle').textContent=T.t('accordi.famous'); rebuildAll(); };
   $('#colore').onchange = e => { colored = e.target.checked; renderProg(); renderPresets(); };
   $('#gen').onclick = generate;
   $('#play').onclick = playProg;
@@ -308,8 +311,8 @@
   $('#copy').onclick = async () => {
     if (!prog.length) return;
     const txt = prog.map(i => chordName(i)).join(' - ');
-    try { await navigator.clipboard.writeText(txt); $('#copy').textContent = '✅ Copiato'; setTimeout(() => $('#copy').textContent = '📋 Copia accordi', 1200); }
-    catch { prompt('Copia gli accordi:', txt); }
+    try { await navigator.clipboard.writeText(txt); $('#copy').textContent = T.t('accordi.copied'); setTimeout(() => $('#copy').textContent = T.t('accordi.copy'), 1200); }
+    catch { prompt(T.t('accordi.copy'), txt); }
   };
 
   // avvio

@@ -24,15 +24,15 @@
 <body>
   <main class="wrap">
     <div class="page-head">
-      <a class="back" href="../index.html">← Tutti gli strumenti</a>
-      <h1>🎚️ BPM & tonalità</h1>
-      <p>Carica un file audio (mp3, wav, m4a…) per stimare i battiti al minuto e la tonalità.</p>
+      <a class="back" href="../index.html" data-i18n="common.back">← Tutti gli strumenti</a>
+      <h1 data-i18n="bpm.h1">🎚️ BPM & tonalità</h1>
+      <p data-i18n="bpm.sub">Carica un file audio (mp3, wav, m4a…) per stimare i battiti al minuto e la tonalità.</p>
     </div>
 
     <div class="panel">
       <div class="drop" id="drop">
         <div class="ico">🎵</div>
-        <p><b>Trascina qui un file audio</b><br><span class="muted">oppure clicca per sceglierlo</span></p>
+        <p data-i18n-html="bpm.drop"><b>Trascina qui un file audio</b><br><span class="muted">oppure clicca per sceglierlo</span></p>
         <input type="file" id="file" accept="audio/*" hidden>
       </div>
       <div class="file-name" id="fileName"></div>
@@ -47,17 +47,18 @@
         </div>
         <div class="stat">
           <div class="big" id="key">–</div>
-          <div class="lab">Tonalità stimata</div>
+          <div class="lab" data-i18n="bpm.keyEst">Tonalità stimata</div>
           <div class="sub" id="keySub"></div>
         </div>
       </div>
-      <p class="legend muted" style="font-size:.8rem;margin-top:16px">
+      <p class="legend muted" style="font-size:.8rem;margin-top:16px" data-i18n="bpm.legend">
         Le stime sono automatiche: il BPM può risultare doppio o metà del reale, e la tonalità è un'ipotesi
         basata sulle note più presenti. Usale come punto di partenza. Tutto avviene nel tuo browser, nessun file viene caricato online.
       </p>
     </div>
   </main>
 
+  <script src="../js/i18n.js"></script>
   <script src="../js/common.js"></script>
   <script src="../js/bpm-key.js"></script>
 </body>

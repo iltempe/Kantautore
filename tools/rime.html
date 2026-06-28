@@ -30,41 +30,41 @@
 <body>
   <main class="wrap">
     <div class="page-head">
-      <a class="back" href="../index.html">← Tutti gli strumenti</a>
-      <h1>📖 Rime & metrica</h1>
-      <p>Trova parole che rimano e controlla quante sillabe ha ogni verso.</p>
+      <a class="back" href="../index.html" data-i18n="common.back">← Tutti gli strumenti</a>
+      <h1 data-i18n="rime.h1">📖 Rime & metrica</h1>
+      <p data-i18n="rime.sub">Trova parole che rimano e controlla quante sillabe ha ogni verso.</p>
     </div>
 
     <div class="cols">
       <!-- RIME -->
       <div class="panel">
-        <h2>Dizionario delle rime</h2>
+        <h2 data-i18n="rime.dict">Dizionario delle rime</h2>
         <div class="row">
           <div style="flex:2">
-            <label>Parola</label>
-            <input type="text" id="word" placeholder="es. amore" autocomplete="off">
+            <label data-i18n="rime.word">Parola</label>
+            <input type="text" id="word" data-i18n-ph="rime.wordPh" placeholder="es. amore" autocomplete="off">
           </div>
           <div class="grow0">
             <label>&nbsp;</label>
             <div class="seg-btns" id="mode">
-              <button data-mode="rima" class="on">Rima</button>
-              <button data-mode="assonanza">Assonanza</button>
+              <button data-mode="rima" class="on" data-i18n="rime.rhyme">Rima</button>
+              <button data-mode="assonanza" data-i18n="rime.assonance">Assonanza</button>
             </div>
           </div>
         </div>
-        <div class="status" id="rstatus">Carico il dizionario…</div>
+        <div class="status" id="rstatus" data-i18n="rime.loading">Carico il dizionario…</div>
         <div class="rhymes" id="rhymes"></div>
       </div>
 
       <!-- METRICA -->
       <div class="panel">
-        <h2>Conta-sillabe</h2>
-        <label>Incolla qui i tuoi versi (uno per riga)</label>
-        <textarea id="metricInput" spellcheck="false" placeholder="Cammino da solo nella notte
+        <h2 data-i18n="rime.counter">Conta-sillabe</h2>
+        <label data-i18n="rime.versesLbl">Incolla qui i tuoi versi (uno per riga)</label>
+        <textarea id="metricInput" spellcheck="false" data-i18n-ph="rime.versesPh" placeholder="Cammino da solo nella notte
 penso ancora a te
 e il vento porta via la mia città"></textarea>
         <div id="lines" style="margin-top:14px"></div>
-        <div class="legend">
+        <div class="legend" data-i18n-html="rime.legend">
           Conteggio con <b>sinalefe</b> (vocali a contatto fra parole contano come una). Il nome del verso
           (settenario, endecasillabo…) è una stima, utile come riferimento ritmico.
         </div>
@@ -72,6 +72,7 @@ e il vento porta via la mia città"></textarea>
     </div>
   </main>
 
+  <script src="../js/i18n.js"></script>
   <script src="../js/common.js"></script>
   <script src="../js/sillabe.js"></script>
   <script src="../js/rime.js"></script>
